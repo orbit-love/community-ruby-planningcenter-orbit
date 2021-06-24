@@ -11,7 +11,7 @@ Add your Planning Center interactions into your Orbit workspace with this commun
 |<p align="left">:sparkles:</p> This is a *community project*. The Orbit team does its best to maintain it and keep it up to date with any recent API changes.<br/><br/>We welcome community contributions to make sure that it stays current. <p align="right">:sparkles:</p>|
 |-----------------------------------------|
 
-![There are three ways to use this integration. Install package - build and run your own applications. Run the CLI - run on-demand directly from your terminal. Schedule an automation with GitHub - get started in minutes - no coding required](readme_images/ways-to-use.png)
+![There are three ways to use this integration. Install package - build and run your own applications. Run the CLI - run on-demand directly from your terminal. Schedule an automation with GitHub - get started in minutes - no coding required](docs/ways-to-use.png)
 ## First Time Setup
 
 To set up this integration you will need your Planning Center API secret and your Planning Center app ID. See the below table for instructions on where to find them, along with your Orbit API credentials.
