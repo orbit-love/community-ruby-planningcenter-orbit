@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "optparse"
+
+check_event_checkins = false
+historical_import = false
+
+options = {}
+choices = OptionParser.new do |opts|
+  opts.banner = "Usage: planningcenter_orbit --check-event-checkins"
+  opts.on("-h", "--help", "Prints help instructions") do
+    puts opts
+    exit
+  end
+  opts.on("--check-event-checkins", "Check for new event check-ins on Planning Center") do
+    check_event_checkins = true
+  end
+  opts.on("--historical-import", "Perform a historical import of all the Planning Center data") do
+    historical_import = true
+  end
+end.parse!
+
+$LOAD_PATH.unshift(File.expand_path("../lib/circle_orbit", __dir__))
+
+require_relative "../lib/planningcenter_orbit"
+require_relative "../scripts/check_event_checkins"
+
+if check_event_checkins
+  puts "Checking for new event check-ins and sending them to your Orbit workspace..."
+  ARGV[0] = "render"
+  ARGV[1] = historical_import
+  PlanningcenterOrbit::Scripts::CheckEventCheckins.start(ARGV)
+end
