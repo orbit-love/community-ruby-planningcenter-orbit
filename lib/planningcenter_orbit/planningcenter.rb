@@ -24,7 +24,7 @@ module PlanningcenterOrbit
 
         times = 0
         checkins.each do |checkin|
-          unless @historical_import && last_orbit_activity_timestamp
+          unless @historical_import
             next if checkin["attributes"]["created_at"] < last_orbit_activity_timestamp
           end
 
