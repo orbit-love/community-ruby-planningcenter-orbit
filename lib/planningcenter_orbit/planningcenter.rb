@@ -24,7 +24,7 @@ module PlanningcenterOrbit
 
         times = 0
         checkins.each do |checkin|
-          unless @historical_import
+          unless @historical_import && last_orbit_activity_timestamp
             next if checkin["attributes"]["created_at"] < last_orbit_activity_timestamp
           end
 
@@ -94,28 +94,13 @@ module PlanningcenterOrbit
 
     def last_orbit_activity_timestamp
       @last_orbit_activity_timestamp ||= begin
-        url = URI("https://app.orbit.love/api/v1/#{@orbit_workspace}/activities")
-        params = {
-          items: 10,
-          direction: "DESC",
-          activity_type: "custom:planning_center:check_in"
-        }
-        url.query = URI.encode_www_form(params)
-        http = Net::HTTP.new(url.host, url.port)
-        http.use_ssl = true
-        req = Net::HTTP::Get.new(url)
-        req["Accept"] = "application/json"
-        req["Content-Type"] = "application/json"
-        req["Authorization"] = "Bearer #{@orbit_api_key}"
-        req["User-Agent"] = "community-ruby-planningcenter-orbit/#{PlanningcenterOrbit::VERSION}"
-
-        response = http.request(req)
-
-        response = JSON.parse(response.body)
-
-        return nil if response["data"].nil? || response["data"].empty?
-
-        response["data"][0]["attributes"]["created_at"]
+        OrbitActivities::Request.new(
+          api_key: @orbit_api_key,
+          workspace_id: @orbit_workspace,
+          user_agent: "community-ruby-planningcenter-orbit/#{PlanningcenterOrbit::VERSION}",
+          action: "latest_activity_timestamp",
+          filters: { activity_type: "custom:planning_center:check_in" }
+        ).response
       end
     end
   end
